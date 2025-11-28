@@ -1,1 +1,687 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAM TRX | HELLCAT | АБСОЛЮТНАЯ ВЛАСТЬ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        :root {
+            --hellcat-red: #ff0022;
+            --hellcat-orange: #ff4400;
+            --cyber-blue: #00eeff;
+            --cyber-purple: #aa00ff;
+            --dark-bg: #0a0a0a;
+            --neon-glow: 0 0 20px, 0 0 40px, 0 0 60px;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: white;
+            font-family: 'Orbitron', monospace;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix Background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000 0%, #111 50%, #000 100%);
+            z-index: -2;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+        }
+
+        .main-title {
+            font-size: 8rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, var(--hellcat-red), var(--hellcat-orange), var(--cyber-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: var(--neon-glow) var(--hellcat-red);
+            animation: titleGlow 2s ease-in-out infinite alternate;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            color: var(--cyber-blue);
+            text-shadow: 0 0 20px var(--cyber-blue);
+            margin-bottom: 2rem;
+            animation: subtitlePulse 3s infinite;
+        }
+
+        .hellcat-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--hellcat-red), var(--hellcat-orange));
+            color: black;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin: 10px;
+            animation: badgePulse 2s infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .hellcat-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--hellcat-red);
+        }
+
+        /* Specs Grid */
+        .specs-section {
+            padding: 100px 20px;
+            background: rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--cyber-blue);
+            margin-bottom: 4rem;
+            text-shadow: 0 0 20px var(--cyber-blue);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .spec-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--cyber-blue);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spec-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 238, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .spec-card:hover::before {
+            left: 100%;
+        }
+
+        .spec-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 238, 255, 0.3);
+            border-color: var(--hellcat-red);
+        }
+
+        .spec-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .spec-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--hellcat-orange);
+            margin: 10px 0;
+            text-shadow: 0 0 10px var(--hellcat-orange);
+        }
+
+        .spec-label {
+            color: var(--cyber-blue);
+            font-size: 1.1rem;
+        }
+
+        /* Performance Bars */
+        .performance-section {
+            padding: 100px 20px;
+            background: linear-gradient(45deg, #000 0%, #1a0000 100%);
+        }
+
+        .perf-bars {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .perf-item {
+            margin: 30px 0;
+        }
+
+        .perf-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: var(--cyber-blue);
+        }
+
+        .perf-bar {
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .perf-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--hellcat-red), var(--hellcat-orange));
+            border-radius: 10px;
+            position: relative;
+            animation: loadIn 2s ease-out;
+        }
+
+        .perf-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        /* 3D Model Section */
+        .model-section {
+            height: 80vh;
+            position: relative;
+            background: radial-gradient(circle at center, #1a0000 0%, #000 70%);
+        }
+
+        .model-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .car-model {
+            font-size: 20rem;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px var(--hellcat-red));
+        }
+
+        /* Interactive Features */
+        .interactive-section {
+            padding: 100px 20px;
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .feature {
+            background: rgba(255, 68, 0, 0.1);
+            border: 1px solid var(--hellcat-orange);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature:hover {
+            background: rgba(255, 68, 0, 0.3);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--hellcat-orange);
+        }
+
+        /* Animations */
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 20px var(--hellcat-red), 0 0 40px var(--hellcat-red); }
+            100% { text-shadow: 0 0 30px var(--hellcat-red), 0 0 60px var(--hellcat-red), 0 0 80px var(--cyber-blue); }
+        }
+
+        @keyframes subtitlePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px var(--hellcat-red); }
+            50% { transform: scale(1.05); box-shadow: 0 0 40px var(--hellcat-red); }
+        }
+
+        @keyframes loadIn {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        @keyframes matrix {
+            0% { transform: translateY(-100%); opacity: 0; }
+            5% { opacity: 1; }
+            95% { opacity: 1; }
+            100% { transform: translateY(1000%); opacity: 0; }
+        }
+
+        /* Matrix Characters */
+        .matrix-char {
+            position: fixed;
+            color: var(--cyber-blue);
+            font-family: 'Courier New', monospace;
+            animation: matrix linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Sound Toggle */
+        .sound-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .sound-btn {
+            background: var(--hellcat-red);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--hellcat-red);
+            transition: all 0.3s ease;
+        }
+
+        .sound-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--cyber-blue);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 4rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .car-model {
+                font-size: 10rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(var(--hellcat-red), var(--hellcat-orange));
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(var(--cyber-blue), var(--cyber-purple));
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Background -->
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <!-- Sound Toggle -->
+    <div class="sound-toggle">
+        <button class="sound-btn" onclick="toggleSound()">🔊</button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <video class="hero-video" autoplay muted loop>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-dark-road-with-cars-34575-large.mp4" type="video/mp4">
+        </video>
+        
+        <div class="hero-content">
+            <h1 class="main-title">RAM TRX</h1>
+            <div class="subtitle">HELLCAT SUPERCHARGED V8</div>
+            <div class="hellcat-badge" onclick="scrollToSpecs()">6.2L SUPERCHARGED</div>
+            <div class="hellcat-badge" onclick="scrollToPerformance()">702 HP</div>
+            <div class="hellcat-badge" onclick="startEngineSound()">🔥 START ENGINE</div>
+        </div>
+    </section>
+
+    <!-- Specifications -->
+    <section class="specs-section" id="specs">
+        <h2 class="section-title">ТЕХНИЧЕСКИЕ ХАРАКТЕРИСТИКИ</h2>
+        <div class="specs-grid">
+            <div class="spec-card">
+                <div class="spec-icon">🚀</div>
+                <div class="spec-value">6.2L</div>
+                <div class="spec-label">SUPERCHARGED V8</div>
+                <div class="spec-label">HELLCAT ENGINE</div>
+            </div>
+            
+            <div class="spec-card">
+                <div class="spec-icon">💥</div>
+                <div class="spec-value">702 HP</div>
+                <div class="spec-label">ЛОШАДИНЫХ СИЛ</div>
+                <div class="spec-label">@ 6100 RPM</div>
+            </div>
+            
+            <div class="spec-card">
+                <div class="spec-icon">⚡</div>
+                <div class="spec-value">881 Nm</div>
+                <div class="spec-label">КРУТЯЩИЙ МОМЕНТ</div>
+                <div class="spec-label">@ 4800 RPM</div>
+            </div>
+            
+            <div class="spec-card">
+                <div class="spec-icon">🎯</div>
+                <div class="spec-value">4.5s</div>
+                <div class="spec-label">0-100 KM/H</div>
+                <div class="spec-label">SPRINT</div>
+            </div>
+            
+            <div class="spec-card">
+                <div class="spec-icon">🏁</div>
+                <div class="spec-value">190 mph</div>
+                <div class="spec-label">МАКСИМАЛЬНАЯ</div>
+                <div class="spec-label">СКОРОСТЬ</div>
+            </div>
+            
+            <div class="spec-card">
+                <div class="spec-icon">🔥</div>
+                <div class="spec-value">2.7 Ton</div>
+                <div class="spec-label">СОБСТВЕННЫЙ ВЕС</div>
+                <div class="spec-label">БРУТАЛЬНАЯ СИЛА</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Performance Section -->
+    <section class="performance-section" id="performance">
+        <h2 class="section-title">ПРОИЗВОДИТЕЛЬНОСТЬ</h2>
+        <div class="perf-bars">
+            <div class="perf-item">
+                <div class="perf-label">
+                    <span>УСКОРЕНИЕ</span>
+                    <span>100%</span>
+                </div>
+                <div class="perf-bar">
+                    <div class="perf-fill" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="perf-item">
+                <div class="perf-label">
+                    <span>МОЩНОСТЬ</span>
+                    <span>98%</span>
+                </div>
+                <div class="perf-bar">
+                    <div class="perf-fill" style="width: 98%"></div>
+                </div>
+            </div>
+            
+            <div class="perf-item">
+                <div class="perf-label">
+                    <span>БЕЗУМИЕ</span>
+                    <span>∞</span>
+                </div>
+                <div class="perf-bar">
+                    <div class="perf-fill" style="width: 100%"></div>
+                </div>
+            </div>
+            
+            <div class="perf-item">
+                <div class="perf-label">
+                    <span>ПРЕСТИЖ</span>
+                    <span>95%</span>
+                </div>
+                <div class="perf-bar">
+                    <div class="perf-fill" style="width: 95%"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D Model Section -->
+    <section class="model-section">
+        <div class="model-container">
+            <div class="car-model">🚙</div>
+        </div>
+    </section>
+
+    <!-- Interactive Features -->
+    <section class="interactive-section">
+        <h2 class="section-title">ЛЕГЕНДАРНЫЕ ФИЧИ</h2>
+        <div class="features-grid">
+            <div class="feature" onclick="playFeatureSound('supercharger')">
+                <h3>🔄 SUPERCHARGER</h3>
+                <p>2.4L нагнетатель IHI</p>
+            </div>
+            
+            <div class="feature" onclick="playFeatureSound('exhaust')">
+                <h3>🎵 ACTIVE EXHAUST</h3>
+                <p>Активная выхлопная система</p>
+            </div>
+            
+            <div class="feature" onclick="playFeatureSound('suspension')">
+                <h3>🏔️ BILSTEIN SUSPENSION</h3>
+                <p>Адаптивная подвеска</p>
+            </div>
+            
+            <div class="feature" onclick="playFeatureSound('launch')">
+                <h3>🚀 LAUNCH CONTROL</h3>
+                <p>Система запуска</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Audio Elements -->
+    <audio id="engineSound" loop>
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-sports-car-engine-rev-1661.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="superchargerSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-car-turbo-accerelation-2121.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="exhaustSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-car-heavy-acceleration-2101.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Matrix Background Effect
+        function createMatrixEffect() {
+            const bg = document.getElementById('matrixBg');
+            const chars = '01RAMTRXHELLCATV8';
+            
+            for (let i = 0; i < 100; i++) {
+                const char = document.createElement('div');
+                char.className = 'matrix-char';
+                char.textContent = chars[Math.floor(Math.random() * chars.length)];
+                char.style.left = Math.random() * 100 + 'vw';
+                char.style.animationDuration = (Math.random() * 10 + 5) + 's';
+                char.style.animationDelay = Math.random() * 5 + 's';
+                char.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                char.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                bg.appendChild(char);
+            }
+        }
+
+        // Sound Management
+        let soundEnabled = true;
+        const engineSound = document.getElementById('engineSound');
+        const superchargerSound = document.getElementById('superchargerSound');
+        const exhaustSound = document.getElementById('exhaustSound');
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.querySelector('.sound-btn');
+            
+            if (!soundEnabled) {
+                engineSound.pause();
+                btn.textContent = '🔇';
+                btn.style.background = '#333';
+            } else {
+                btn.textContent = '🔊';
+                btn.style.background = 'var(--hellcat-red)';
+            }
+        }
+
+        function startEngineSound() {
+            if (soundEnabled) {
+                engineSound.play();
+                
+                // Анимация кнопки
+                const btn = document.querySelector('.hellcat-badge:last-child');
+                btn.style.background = 'linear-gradient(45deg, var(--cyber-blue), var(--cyber-purple))';
+                btn.textContent = 'ENGINE RUNNING 🔥';
+                
+                setTimeout(() => {
+                    btn.style.background = 'linear-gradient(45deg, var(--hellcat-red), var(--hellcat-orange))';
+                    btn.textContent = '🔥 START ENGINE';
+                }, 3000);
+            }
+        }
+
+        function playFeatureSound(feature) {
+            if (!soundEnabled) return;
+            
+            switch(feature) {
+                case 'supercharger':
+                    superchargerSound.play();
+                    break;
+                case 'exhaust':
+                    exhaustSound.play();
+                    break;
+                case 'launch':
+                    // Можно добавить звук запуска
+                    break;
+            }
+        }
+
+        // Scroll Functions
+        function scrollToSpecs() {
+            document.getElementById('specs').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function scrollToPerformance() {
+            document.getElementById('performance').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Parallax Effect
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            createMatrixEffect();
+            
+            // Auto-start matrix animation
+            setInterval(createMatrixEffect, 2000);
+            
+            // Add hover effects to all spec cards
+            const cards = document.querySelectorAll('.spec-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = (index * 0.1) + 's';
+            });
+            
+            // Console welcome message
+            console.log(`%c
+    ╔══════════════════════════════════════╗
+    ║           RAM TRX HELLCAT            ║
+    ║        702 HP OF PURE POWER          ║
+    ║     WELCOME TO THE LEGEND! 🚀        ║
+    ╚══════════════════════════════════════╝
+            `, 'color: #ff0022; font-size: 14px;');
+        });
+
+        // Performance animation on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bars = document.querySelectorAll('.perf-fill');
+                    bars.forEach(bar => {
+                        bar.style.animation = 'loadIn 2s ease-out';
+                    });
+                }
+            });
+        });
+
+        observer.observe(document.querySelector('.performance-section'));
+    </script>
+</body>
+</html>
